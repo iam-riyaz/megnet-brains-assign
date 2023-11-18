@@ -1,4 +1,5 @@
 import { employeesRoute } from "./routes/employees.route.js"
+import { filesRouter } from "./routes/files.route.js"
 import {app} from "./utils/server.js"
 
 app.get("/",async(req,res)=>{
@@ -12,3 +13,5 @@ app.get("/",async(req,res)=>{
 })
 
 app.use("/employees",employeesRoute)
+
+app.use("/files",filesRouter)
