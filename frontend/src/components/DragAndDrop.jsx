@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { getDownloadURL, list, ref, uploadBytes } from "firebase/storage";
 import { firebaseStorage } from "../config/firebase.config.js";
 import axios from "axios";
+import { Card } from "./Card.jsx";
 
 export const DragAndDrop = () => {
   const [fileData, setFileData] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [userData, setUserData] = useState([]);
 
   const handleChange = async (e) => {
     setFileData(e.target.files[0]);
@@ -23,18 +25,38 @@ export const DragAndDrop = () => {
     const uploadBtyesVariable = await uploadBytes(storageRef, pictureData);
     const downloadUrl = await getDownloadURL(uploadBtyesVariable.ref);
     alert("🎉🎉 File Uploaded Successfully");
-  
+
     setFileData(null);
-    const sendObject= {fileName: fileData.name, src:downloadUrl,size:fileData.size, mineType:fileData.type}
-    axios.post('http://localhost:3000/files/create',sendObject).then((res)=>{console.log(res)}).catch((err)=>{console.log(err)})
+    const sendObject = {
+      fileName: fileData.name,
+      src: downloadUrl,
+      size: fileData.size,
+      mineType: fileData.type,
+    };
+    axios
+      .post("http://localhost:3000/files/create", sendObject)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setIsUploading(false);
     console.log(downloadUrl);
     // -------
   };
 
   useEffect(() => {
-    console.log(fileData);
-  }, fileData);
+    axios
+      .get("http://localhost:3000/files/getFiles")
+      .then((res) => {
+        setUserData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log({ userData });
+  }, [fileData]);
   return (
     <>
       <div class="flex items-center justify-center w-full">
@@ -149,6 +171,15 @@ export const DragAndDrop = () => {
             </button>
           </div>
         )}
+      </div>
+      <div className="grid grid-cols-5 gap-x-5 gap-y-4  ">
+      {userData.map((e) => {
+        return (
+          <>
+            <Card data={e} />
+          </>
+        );
+      })}
       </div>
     </>
   );
