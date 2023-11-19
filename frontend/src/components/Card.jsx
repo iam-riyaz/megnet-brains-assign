@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const Card = ({ data }) => {
+export const Card = ({ data,handleGetData}) => {
 
   const truncatedFileName = data.fileName.length > 10 ? data.fileName.substring(0, 10) + '...' : data.fileName;
   const handleDownload = async ( {imageUrl} ) => {
@@ -12,6 +12,20 @@ export const Card = ({ data }) => {
     downloadLink.click();
     document.body.removeChild(downloadLink);
   };
+
+  const handleDelete= async (_id)=>{
+    console.log({_id})
+    const deleteFile= await axios.delete("http://localhost:3000/files/delete",{data:{_id}})
+    console.log({deleteFile})
+    const confirmDelete= window.confirm("Are you sure you want to delete")
+
+    if(confirmDelete)
+    {
+      handleGetData()
+
+    }
+    
+  }
 
   return (
     <>
@@ -48,7 +62,7 @@ export const Card = ({ data }) => {
               </button>
             
 
-            <button class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <button onClick={()=>handleDelete(data._id)} class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
               Delete
             </button>
           </div>

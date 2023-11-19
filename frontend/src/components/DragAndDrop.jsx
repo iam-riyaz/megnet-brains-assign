@@ -10,6 +10,12 @@ export const DragAndDrop = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [userData, setUserData] = useState([]);
 
+  const handleGetData = async () => {
+    const data = await axios.get("http://localhost:3000/files/getFiles");
+
+    setUserData(data.data);
+  };
+
   const handleChange = async (e) => {
     setFileData(e.target.files[0]);
   };
@@ -25,9 +31,11 @@ export const DragAndDrop = () => {
     );
     const uploadBtyesVariable = await uploadBytes(storageRef, pictureData);
     const downloadUrl = await getDownloadURL(uploadBtyesVariable.ref);
+
+    // ----
     alert("🎉🎉 File Uploaded Successfully");
-   
-    console.log(downloadUrl)
+
+    console.log(downloadUrl);
     setFileData(null);
     const sendObject = {
       fileName: fileData.name,
@@ -43,22 +51,22 @@ export const DragAndDrop = () => {
       .catch((err) => {
         console.log(err);
       });
+    handleGetData();
     setIsUploading(false);
     console.log(downloadUrl);
-    // -------
+  };
+
+  const handleDelete = async (_id) => {
+    const deleteFile = await axios.delete(
+      "http://localhost:3000/files/delete",
+      { _id: _id }
+    );
+    // handleGetData()
   };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/files/getFiles")
-      .then((res) => {
-        setUserData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    
-  }, [fileData]);
+    handleGetData();
+  }, []);
   return (
     <>
       <div class="flex items-center justify-center w-full">
@@ -174,15 +182,11 @@ export const DragAndDrop = () => {
           </div>
         )}
       </div>
-      <div className="flex flex-wrap   ">
-      {userData.map((e) => {
-        return (
-          <>
-            <Card data={e} />
-          </>
-        );
-      })}
-      </div>
+      {userData.length!=0?<div className="flex flex-wrap   ">
+        {userData.map((e, i) => {
+          return  <Card key={i + 1} handleGetData={handleGetData} data={e} />
+        })}
+      </div>:<div className="flex justify-center pt-10"> <img className="w-1/4" src="/empty.jpg" alt="" /> </div>}
     </>
   );
 };

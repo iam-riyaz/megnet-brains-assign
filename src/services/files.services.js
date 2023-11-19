@@ -13,3 +13,9 @@ export const getFiles= async( )=>{
     const getFiles= await Files.find().sort({createdAt:-1})
     return getFiles
 }
+
+export const deleteFile= async({_id} )=>{
+    const deletedFile= await Files.findByIdAndDelete({_id})
+     
+    return deletedFile
+}

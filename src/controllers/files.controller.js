@@ -31,3 +31,15 @@ export const getFiles = async (req, res)=>{
        res.status(404).send("error getting files")
     }
 }
+
+export const deleteFile= async (req, res)=>{
+    try{
+        const {_id}= req.body
+        
+          const deleteFile= await fileServices.deleteFile({_id})
+          res.status(200).send({deleteFile})
+    }
+    catch{
+        res.status(404).send({status:"failure",request:req.body._id, })
+    }
+}
