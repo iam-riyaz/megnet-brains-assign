@@ -10,6 +10,6 @@ export const createFiles= async({fileName,mineType, src, size})=>{
 }
 
 export const getFiles= async( )=>{
-    const getFiles= await Files.find()
+    const getFiles= await Files.find().sort({createdAt:-1})
     return getFiles
 }

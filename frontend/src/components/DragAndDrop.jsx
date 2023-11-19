@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getDownloadURL, list, ref, uploadBytes } from "firebase/storage";
+
 import { firebaseStorage } from "../config/firebase.config.js";
 import axios from "axios";
 import { Card } from "./Card.jsx";
@@ -25,7 +26,8 @@ export const DragAndDrop = () => {
     const uploadBtyesVariable = await uploadBytes(storageRef, pictureData);
     const downloadUrl = await getDownloadURL(uploadBtyesVariable.ref);
     alert("🎉🎉 File Uploaded Successfully");
-
+   
+    console.log(downloadUrl)
     setFileData(null);
     const sendObject = {
       fileName: fileData.name,
@@ -55,7 +57,7 @@ export const DragAndDrop = () => {
       .catch((err) => {
         console.log(err);
       });
-    console.log({ userData });
+    
   }, [fileData]);
   return (
     <>
@@ -172,7 +174,7 @@ export const DragAndDrop = () => {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-5 gap-x-5 gap-y-4  ">
+      <div className="flex flex-wrap   ">
       {userData.map((e) => {
         return (
           <>
