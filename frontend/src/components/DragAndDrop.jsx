@@ -159,6 +159,7 @@ export const DragAndDrop = () => {
             <button
               onClick={() => {
                 setFileData(null);
+                setIsUploading(false)
               }}
               className="bg-red-500 py-3 w-1/5 mt-4 mx-3 rounded-lg text-white text-xl font-semibold"
             >
