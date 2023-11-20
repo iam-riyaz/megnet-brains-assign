@@ -11,7 +11,7 @@ export const DragAndDrop = () => {
   const [userData, setUserData] = useState([]);
 
   const handleGetData = async () => {
-    const data = await axios.get("http://localhost:3000/files/getFiles");
+    const data = await axios.get("https://backend-megnet-brains.onrender.com/files/getFiles");
 
     setUserData(data.data);
   };
@@ -44,7 +44,7 @@ export const DragAndDrop = () => {
       mineType: fileData.type,
     };
     axios
-      .post("http://localhost:3000/files/create", sendObject)
+      .post("https://backend-megnet-brains.onrender.com/files/create", sendObject)
       .then((res) => {
         console.log(res);
       })
@@ -58,7 +58,7 @@ export const DragAndDrop = () => {
 
   const handleDelete = async (_id) => {
     const deleteFile = await axios.delete(
-      "http://localhost:3000/files/delete",
+      "https://backend-megnet-brains.onrender.com/files/delete",
       { _id: _id }
     );
     // handleGetData()

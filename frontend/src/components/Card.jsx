@@ -15,7 +15,7 @@ export const Card = ({ data,handleGetData}) => {
 
   const handleDelete= async (_id)=>{
     console.log({_id})
-    const deleteFile= await axios.delete("http://localhost:3000/files/delete",{data:{_id}})
+    const deleteFile= await axios.delete("https://backend-megnet-brains.onrender.com/files/delete",{data:{_id}})
     console.log({deleteFile})
     const confirmDelete= window.confirm("Are you sure you want to delete")
 
