@@ -24,7 +24,7 @@ export const DragAndDrop = () => {
     setIsUploading(true);
     // To Upload image to firebase storage----------
     const pictureData = fileData;
-
+                                                                                                              
     const storageRef = ref(
       firebaseStorage,
       `/megnet_brains/${Date.now() + pictureData.name}`
@@ -66,7 +66,7 @@ export const DragAndDrop = () => {
 
   useEffect(() => {
     handleGetData();
-  }, []);
+  }, [userData]);
   return (
     <>
       <div class="flex items-center justify-center w-full">
@@ -156,7 +156,16 @@ export const DragAndDrop = () => {
               ) : null}
               {isUploading == false ? "Upload" : "Uploading"}
             </button>
-            <button
+            {isUploading?<button
+              onClick={() => {
+                setFileData(null);
+                setIsUploading(false)
+              }}
+              disabled
+              className="bg-red-500 py-3 w-1/5 mt-4 mx-3 rounded-lg text-white opacity-40 text-xl font-semibold"
+            >
+              Cencel
+            </button>:<button
               onClick={() => {
                 setFileData(null);
                 setIsUploading(false)
@@ -164,7 +173,7 @@ export const DragAndDrop = () => {
               className="bg-red-500 py-3 w-1/5 mt-4 mx-3 rounded-lg text-white text-xl font-semibold"
             >
               Cencel
-            </button>
+            </button>}
           </div>
         ) : (
           <div>
